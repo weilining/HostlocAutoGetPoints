@@ -1,7 +1,7 @@
 name: "HostlocAutoGetPoints"
 
 on:
-  push:
+  # push:
   #   branches:
   #     - main
   schedule:
