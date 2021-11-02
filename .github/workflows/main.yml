@@ -2,10 +2,10 @@ name: "HostlocAutoGetPoints"
 
 on:
   push:
-    branches:
-      - main
-  schedule:
-    - cron: "0 16 * * *"
+  #   branches:
+  #     - main
+  # schedule:
+  #   - cron: "0 16 * * *"
 
 jobs:
   get_points:
@@ -31,13 +31,3 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python index.py
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: "zip"
-          filename: "release.zip"
-          exclusions: "*.git* /*node_modules/* .editorconfig"
-      - uses: actions/upload-artifact@v1
-        with:
-          name: my-artifact
-          path: ${{ github.workspace }}/release.zip
