@@ -36,7 +36,8 @@
 
 ```bash
 cd src  # 依赖库需要安装在与函数入口文件同一级的目录下，即需要进入`src`目录后再执行依赖安装操作。
-python3 -m pip install -i https://pypi.python.org/simple -r requirements.txt -t .
+python3 -m pip install --upgrade pip
+pip3 install -r requirements.txt -t .
 ```
 
 安装完成后，在 IDE 左侧的文件树中查看已安装的依赖库。
