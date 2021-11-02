@@ -8,18 +8,22 @@ on:
     - cron: '0 16 * * *'
 
 jobs:
-  build:
-  # if: ${{ github.repository_owner == 'weilining' }}
+  get_points:
+    # if: ${{ github.repository_owner == 'weilining' }}
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout codes'
       uses: actions/checkout@v2
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: ./
     - name: 'Set python'
       uses: actions/setup-python@v1
       with:
         python-version: '3.x'
     - name: 'Install dependencies'
-              run: python3 -m pip install -U requests pyaes python-telegram-bot
+      run: python3 -m pip install -U requests pyaes python-telegram-bot
     - name: 'Get points'
       env:
         HOSTLOC_USERNAME: ${{ secrets.HOSTLOC_USERNAME }}
@@ -27,3 +31,9 @@ jobs:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         CHAT_ID: ${{ secrets.CHAT_ID }}
       run: python index.py
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: 'release.zip'
+        exclusions: '*.git* /*node_modules/* .editorconfig'
