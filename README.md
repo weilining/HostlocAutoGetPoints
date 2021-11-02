@@ -2,22 +2,24 @@
 
 # 此代码是在inkuang大佬的基础上稍作改变，增加了TG推送。目前原库已GG，感谢MJJ的贡献
 
+[inkuang/hostloc-auto-get-points: 自动获取 Hostloc 论坛的积分（由于 GitHub 使用政策的更新，原先在 GitHub 的仓库被封禁了，这里是备份） - hostloc_get_points.py at master - hostloc-auto-get-points - Ming's Git Server](https://git.inkuang.com/inkuang/hostloc-auto-get-points/src/branch/master/hostloc_get_points.py)
+
 ### 推送结果
 
 ![image](https://user-images.githubusercontent.com/64535826/118832486-3c1c8d80-b8f3-11eb-9d42-77bbd3b56e90.png)
 
-因为发现TG机器人推送内容包含'xxx.xxx.xxx.xxx'时会推送失败,故改为'xxx,xxx,xxx,xxx'以英文逗号形式输出ip地址。
+
 
 ### Actions secrets 设置
 'HOSTLOC_USERNAME'  用户名，多个用','英文逗号隔开
 
 'HOSTLOC_PASSWORD'  密码，多个用','英文逗号隔开，与用户名一一对应，不对应和上下数量不一致会报错。
 
-'BOT_API'  TG机器人的API
+'BOT_TOKEN'  TG机器人的TOKEN
 
 'CHAT_ID'  你自己的chat_id
 
-### API 在@BotFather申请，chat_id可以通过机器人@userinfobot发送任意消息获取，返回的id即是chat_id
+### TOKEN在@BotFather申请，chat_id可以通过机器人@userinfobot发送任意消息获取，返回的id即是chat_id
 
 ### 建议搬到私人库自己使用
 
@@ -37,14 +39,14 @@
 左边的删除，然后写入
 
     name: 'HostlocAutoGetPoints'
-
+    
     on:
       push:
         branches: 
           - main
       schedule:
         - cron: '0 16 * * *'
-
+    
     jobs:
       get_points:
         runs-on: ubuntu-latest
@@ -56,14 +58,14 @@
           with:
             python-version: '3.x'
         - name: 'Install dependencies'
-          run: python -m pip install --upgrade requests pyaes
+          run: python3 -m pip install -U requests pyaes telegram
         - name: 'Get points'
           env:
             HOSTLOC_USERNAME: ${{ secrets.HOSTLOC_USERNAME }}
             HOSTLOC_PASSWORD: ${{ secrets.HOSTLOC_PASSWORD }}
-            BOT_API: ${{ secrets.BOT_API }}
+            BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
             CHAT_ID: ${{ secrets.CHAT_ID }}
-          run: python HostlocGetPoints.py
+          run: python3 index.py
 
 ![image](https://user-images.githubusercontent.com/64535826/118830589-a7656000-b8f1-11eb-9c2f-e1287a41ab11.png)
 
