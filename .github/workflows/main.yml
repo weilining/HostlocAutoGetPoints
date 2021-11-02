@@ -30,4 +30,4 @@ jobs:
           HOSTLOC_PASSWORD: ${{ secrets.HOSTLOC_PASSWORD }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: python src/index.py
+        run: python index.py
