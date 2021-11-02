@@ -4,8 +4,8 @@ on:
   push:
   #   branches:
   #     - main
-  # schedule:
-  #   - cron: "0 16 * * *"
+  schedule:
+    - cron: "0 16 * * *"
 
 jobs:
   get_points:
@@ -30,4 +30,4 @@ jobs:
           HOSTLOC_PASSWORD: ${{ secrets.HOSTLOC_PASSWORD }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: python index.py
+        run: python src/index.py
