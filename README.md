@@ -103,7 +103,7 @@ python3 -m pip install -i https://pypi.python.org/simple -r requirements.txt -t 
           with:
             python-version: '3.x'
         - name: 'Install dependencies'
-          run: python3 -m pip install -U requests pyaes telegram
+          run: pip3 install -U requests pyaes python-telegram-bot
         - name: 'Get points'
           env:
             HOSTLOC_USERNAME: ${{ secrets.HOSTLOC_USERNAME }}
