@@ -10,7 +10,7 @@
 
 ### 下载 SCF 版本的压缩包
 
-此版本为特别版，支持通过腾讯云函数部署，并且将与主分支同步维护更新，推荐没有自己 VPS 服务器的用户使用，最新版本号为`v1.0.14_mjjscf`。下载地址： https://github.com/weilining/HostlocAutoGetPoints/releases/download/v1.0.14/normal-v1.0.14-mjjscf.zip
+此版本为特别版，支持通过腾讯云函数部署，并且将与主分支同步维护更新，推荐没有自己 VPS 服务器的用户使用，最新版本号为`v1.0.15_mjjscf`。下载地址： https://github.com/weilining/HostlocAutoGetPoints/releases/download/v1.0.15/normal-v1.0.15-mjjscf.zip
 
 下载后你将得到一个 zip 文件，将 zip 文件放到你能找到的任意目录，后面我们将以 zip 文件的形式上传到腾讯云函数。
 
@@ -36,7 +36,7 @@
 
 ```bash
 cd src  # 依赖库需要安装在与函数入口文件同一级的目录下，即需要进入`src`目录后再执行依赖安装操作。
-pip install -r requirements.txt -t .
+python3 -m pip install -i https://pypi.python.org/simple -r requirements.txt -t .
 ```
 
 安装完成后，在 IDE 左侧的文件树中查看已安装的依赖库。
