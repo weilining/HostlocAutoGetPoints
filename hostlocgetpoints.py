@@ -1,19 +1,19 @@
-import os
-import time
 import random
-import re
 import textwrap
 import requests
+from requests import Session as req_Session
+import time
 from urllib import parse
 from pyaes import AESModeOfOperationCBC
-from requests import Session as req_Session
+import re
+from printmyip import PrintMyIp
+from tgpost import TGPost
 
 
 class HostlocGetPoints():
-
     tg_text = ''
-
     # 随机生成用户空间链接
+
     def randomly_gen_uspace_url(self) -> list:
         url_list = []
         # 访问小黑屋用户空间不会获得积分、生成的随机数可能会重复，这里多生成几个链接用作冗余
@@ -112,11 +112,13 @@ class HostlocGetPoints():
 
         if len(test_title) != 0:  # 确保正则匹配到了内容，防止出现数组索引越界的情况
             if test_title[0] != '个人资料 -  全球主机交流论坛 -  Powered by Discuz!':
-                self.tg_text = self.tg_text + '\n第{}个帐户登录失败！\n'.format(number_c)
+                self.tg_text = self.tg_text + \
+                    '\n第{}个帐户登录失败！\n'.format(number_c)
                 print('第{}个帐户登录失败！'.format(number_c))
                 return False
             else:
-                self.tg_text = self.tg_text + '\n第{}个帐户登录成功！\n'.format(number_c)
+                self.tg_text = self.tg_text + \
+                    '\n第{}个帐户登录成功！\n'.format(number_c)
                 print('第{}个帐户登录成功！'.format(number_c))
 
                 # 获取并打印当前账户名
@@ -124,7 +126,8 @@ class HostlocGetPoints():
                 res = s.get(test_url)
                 res.raise_for_status()
                 res.encoding = 'utf-8'
-                name = re.findall('title="访问我的空间">([\s\S]{,20})</a>', res.text)[0]
+                name = re.findall(
+                    'title="访问我的空间">([\s\S]{,20})</a>', res.text)[0]
                 self.tg_text = self.tg_text + '当前账户：' + name + '\n'
                 print('当前账户：' + name)
                 return True
@@ -142,7 +145,7 @@ class HostlocGetPoints():
         points = re.findall("积分: (\d+)", res.text)
 
         if len(points) != 0:  # 确保正则匹配到了内容，防止出现数组索引越界的情况
-            self.tg_text = self.tg_text + '帐户当前积分：' + points[0] +'\n'
+            self.tg_text = self.tg_text + '帐户当前积分：' + points[0] + '\n'
             print('帐户当前积分：' + points[0])
         else:
             self.tg_text = self.tg_text + '无法获取帐户积分，可能页面存在错误或者未登录！' + '\n'
@@ -169,47 +172,14 @@ class HostlocGetPoints():
                     fail += 1
                     print('链接访问异常：' + str(e))
                 continue
-            self.tg_text = self.tg_text + '用户空间成功访问{}个，访问失败{}个\n'.format(success, fail)
+            self.tg_text = self.tg_text + \
+                '用户空间成功访问{}个，访问失败{}个\n'.format(success, fail)
             self.print_current_points(s)  # 再次打印帐户当前积分
         else:
             self.tg_text = self.tg_text + '请检查你的帐户是否正确！\n'
             print('请检查你的帐户是否正确！')
 
-    # 打印输出当前ip地址
-    def print_my_ip(self):
-        api_url = 'https://api.ipify.org/'
-        try:
-            res = requests.get(url=api_url)
-            res.raise_for_status()
-            res.encoding = 'utf-8'
-            self.tg_text = self.tg_text + '当前使用 ip 地址：' + res.text.replace('.', ',') + '\n'
-            print('当前使用 ip 地址：' + res.text)
-        except Exception as e:
-            self.tg_text = self.tg_text + '获取当前 ip 地址失败：' + str(e) + '\n'
-            print('获取当前 ip 地址失败：' + str(e))
-
-    # TG推送
-    def post(self, bot_api, chat_id, text):
-        print('开始推送')
-        headers = {
-            'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
-        text = parse.quote(text)
-        # 修改为自己的bot api token
-        post_url = 'https://api.telegram.org/bot{}/sendMessage' \
-                   '?parse_mode=MarkdownV2&chat_id={}&text={}'.format(bot_api, chat_id, text)
-        try:
-            requests.get(post_url, headers=headers)
-            print('推送成功')
-        except Exception:
-            print("推送失败")
-            time.sleep(3)
-            # 避免推送死循环
-            try:
-                requests.get(post_url, headers=headers)
-            except Exception:
-                pass
-
-    def hostloc_get_points(self, usernames, passwords, bot_api, chat_id,):
+    def hostloc_get_points(self, usernames, passwords, botToken, chatId):
         # 分割用户名和密码为列表
         user_list = usernames.split(',')
         passwd_list = passwords.split(',')
@@ -220,8 +190,10 @@ class HostlocGetPoints():
             self.tg_text = self.tg_text + '用户名与密码个数不匹配，请检查环境变量设置是否错漏！\n'
             print('用户名与密码个数不匹配，请检查环境变量设置是否错漏！')
         else:
-            self.print_my_ip()
-            self.tg_text = self.tg_text + '共检测到{}个帐户，开始获取积分\n'.format(len(user_list))
+            p = PrintMyIp()
+            self.tg_text += p.returnIp()
+            self.tg_text = self.tg_text + \
+                '共检测到{}个帐户，开始获取积分\n'.format(len(user_list))
             print('共检测到', len(user_list), '个帐户，开始获取积分')
             print('*' * 30)
             # 依次登录帐户获取积分，出现错误时不中断程序继续尝试下一个帐户
@@ -237,17 +209,12 @@ class HostlocGetPoints():
                 continue
             self.tg_text = self.tg_text + '\n程序执行完毕，获取积分过程结束'
             print('程序执行完毕，获取积分过程结束')
-#         print(self.tg_text)
-        self.post(bot_api, chat_id, self.tg_text)
+        t = TGPost()
+        t.tgPost(botToken, chatId, self.tg_text)
 
 
+def main_handler(event, context):
+    print("Hello World")
 
-if __name__ == '__main__':
-    usernames = os.environ['HOSTLOC_USERNAME']
-    passwords = os.environ['HOSTLOC_PASSWORD']
-    bot_api = os.environ['BOT_API']
-    chat_id = os.environ['CHAT_ID']
-
-    h = HostlocGetPoints()
-    h.hostloc_get_points(usernames, passwords, bot_api, chat_id)
-
+if __name__ == "__main__":
+    main_handler("", "")
