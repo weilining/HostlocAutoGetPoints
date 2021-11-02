@@ -13,11 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout codes'
-      uses: actions/checkout@v2
-    - uses: actions/upload-artifact@v2
+    - uses: actions/checkout@master
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
       with:
-        name: my-artifact
-        path: ./
+        type: 'zip'
+        filename: 'release.zip'
+        exclusions: '*.git* /*node_modules/* .editorconfig'
+  
     - name: 'Set python'
       uses: actions/setup-python@v1
       with:
