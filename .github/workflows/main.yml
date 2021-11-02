@@ -12,12 +12,6 @@ jobs:
   # if: ${{ github.repository_owner == 'weilining' }}
     runs-on: ubuntu-latest
     steps:
-    - name: Archive Release
-      uses: thedoctor0/zip-release@master
-      with:
-        type: 'zip'
-        filename: 'release.zip'
-        exclusions: '*.git* /*node_modules/* .editorconfig'
     - name: 'Checkout codes'
       uses: actions/checkout@v2
     - name: 'Set python'
