@@ -20,6 +20,7 @@ jobs:
         type: 'zip'
         filename: 'release.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig'
+        
   
     - name: 'Set python'
       uses: actions/setup-python@v1
