@@ -1,18 +1,23 @@
 name: 'HostlocAutoGetPoints'
 
 on:
-  push:
-    branches: 
-      - main
+  # push:
+  #   branches: 
+  #     - main
   schedule:
     - cron: '0 16 * * *'
 
 jobs:
   get_points:
+    # if: ${{ github.repository_owner == 'weilining' }}
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout codes'
       uses: actions/checkout@v2
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: ./
     - name: 'Set python'
       uses: actions/setup-python@v1
       with:
