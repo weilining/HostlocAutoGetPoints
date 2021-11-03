@@ -95,14 +95,14 @@ TOKEN 在@BotFather 申请，chat_id 可以通过机器人@userinfobot 发送任
 左边的删除，然后写入
 
     name: 'HostlocAutoGetPoints'
-    
+
     on:
       push:
         branches:
           - main
       schedule:
         - cron: '0 16 * * *'
-    
+
     jobs:
       get_points:
         runs-on: ubuntu-latest
