@@ -3,9 +3,8 @@ from hostlocgetpoints import HostlocGetPoints
 import os
 import sys
 import codecs
+
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
-
-
 # python3 -m pip install -i https://pypi.python.org/simple python-telegram-bot pyaes requests --upgrade -t .
 # python3 -m pip install -i https://pypi.python.org/simple -r requirements.txt -t .
 # pip3 install -U requests pyaes python-telegram-bot
@@ -17,16 +16,13 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 # python3 -m pip install --upgrade pip
 # pip3 freeze > requirements.txt
 # pip3 install -r requirements.txt -t .
-
-
 def main_handler(event, context):
-    usernames = os.environ['HOSTLOC_USERNAME']
-    passwords = os.environ['HOSTLOC_PASSWORD']
-    botToken = os.environ['BOT_TOKEN']
-    chatId = os.environ['CHAT_ID']
+    usernames = os.environ["HOSTLOC_USERNAME"]
+    passwords = os.environ["HOSTLOC_PASSWORD"]
+    botToken = os.environ["BOT_TOKEN"]
+    chatId = os.environ["CHAT_ID"]
     h = HostlocGetPoints()
     h.hostloc_get_points(usernames, passwords, botToken, chatId)
-    return("Hello World")
 
 
 if __name__ == "__main__":
