@@ -16,6 +16,8 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 # python3 -m pip install --upgrade pip
 # pip3 freeze > requirements.txt
 # pip3 install -r requirements.txt -t .
+
+
 def main_handler(event, context):
     usernames = os.environ["HOSTLOC_USERNAME"]
     passwords = os.environ["HOSTLOC_PASSWORD"]
